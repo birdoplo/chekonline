@@ -4,10 +4,29 @@
   <meta charset="UTF-8">
   <title>Redirecting...</title>
   <script>
-    window.location.href = "https://kasa.vchasno.ua/c/TEST_d5NwGTftVTc8UA?MAC:91c41f1e72d663a1f9179c5f6a190f59211eaf222216360e9d2e3d9a2b53e6aa;DT:20-06-2025T22:45:00;FR:TEST_d5NwGTftVTc8UA;SUM:20.00;FN:9999993241006410";
+    const linkFile = "link.txt?nocache=" + Date.now(); // ⛔ кеш
+
+    fetch(linkFile)
+      .then(response => response.text())
+      .then(url => {
+        window.location.href = url.trim();
+      })
+      .catch(error => {
+        document.body.innerHTML = "<p>Не вдалося завантажити посилання.</p>";
+        console.error("Помилка:", error);
+      });
   </script>
 </head>
 <body>
-  <p>Якщо не перенаправило, <a href="https://kasa.vchasno.ua/c/TEST_d5NwGTftVTc8UA?MAC:91c41f1e72d663a1f9179c5f6a190f59211eaf222216360e9d2e3d9a2b53e6aa;DT:20-06-2025T22:45:00;FR:TEST_d5NwGTftVTc8UA;SUM:20.00;FN:9999993241006410">натисни тут</a>.</p>
+  <p>Зачекай, виконується перенаправлення...<br>
+  Якщо не перенаправило — <a id="fallback" href="#">натисни тут</a>.</p>
+
+  <script>
+    fetch("link.txt?nocache=" + Date.now()) // ще раз для запасного лінку
+      .then(response => response.text())
+      .then(url => {
+        document.getElementById("fallback").href = url.trim();
+      });
+  </script>
 </body>
 </html>
