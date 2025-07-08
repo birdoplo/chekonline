@@ -27,28 +27,43 @@
     }
   </style>
   <script>
-    function loadLink() {
+    let cachedLink = null;
+
+    function fetchFreshLink() {
       const linkFile = "link.txt?nocache=" + Date.now();
-      fetch(linkFile)
-        .then(response => response.text())
-        .then(url => {
-          const trimmedUrl = url.trim();
-          if (trimmedUrl.startsWith("http")) {
-            window.open(trimmedUrl, "_blank");
-          } else {
-            alert("Неправильне посилання.");
-          }
+
+      return fetch(linkFile)
+        .then(response => {
+          if (!response.ok) throw new Error("Файл не знайдено");
+          return response.text();
         })
-        .catch(error => {
-          alert("Не вдалося завантажити посилання.");
-          console.error("Помилка:", error);
+        .then(url => {
+          const trimmed = url.trim();
+          if (!trimmed.startsWith("http")) throw new Error("Некоректне посилання");
+          cachedLink = trimmed;
+          return trimmed;
         });
     }
+
+    function showLink() {
+      if (cachedLink) {
+        window.open(cachedLink, "_blank");
+      } else {
+        alert("Посилання ще не готове. Спробуй пізніше.");
+      }
+    }
+
+    // Автоматично завантажити посилання після завантаження сторінки
+    window.addEventListener("load", () => {
+      fetchFreshLink().catch(err => {
+        console.warn("Чек ще не готовий:", err.message);
+      });
+    });
   </script>
 </head>
 <body>
   <h1>Отримати чек</h1>
   <p>Чек буде сформовано протягом однієї хвилини після покупки.</p>
-  <button onclick="loadLink()">Показати чек</button>
+  <button onclick="showLink()">Показати чек</button>
 </body>
 </html>
