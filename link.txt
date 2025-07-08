@@ -1,1 +1,1 @@
-{lv=qr_url[info][qr]}
+https://kasa.vchasno.ua/c/TEST_R8duyUL46cr2jA?MAC:de7279e37ac77104ec5d7fa49a04e3fb2d1d619440c775e59f2cfdfb81f01cac;DT:08-07-2025T14:27:21;FR:TEST_R8duyUL46cr2jA;SUM:20.00;FN:9999993241006410
