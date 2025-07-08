@@ -2,68 +2,30 @@
 <html>
 <head>
   <meta charset="UTF-8">
-  <title>Отримати чек</title>
-  <style>
-    body {
-      font-family: sans-serif;
-      text-align: center;
-      padding: 50px;
-    }
-
-    h1 {
-      font-size: 32px;
-      margin-bottom: 20px;
-    }
-
-    p {
-      font-size: 18px;
-      margin-bottom: 30px;
-    }
-
-    button {
-      font-size: 24px;
-      padding: 20px 40px;
-      cursor: pointer;
-    }
-  </style>
+  <title>Завантаження чека...</title>
   <script>
-    let cachedLink = null;
+    const linkFile = "link.txt?nocache=" + Date.now();
 
-    function fetchFreshLink() {
-      const linkFile = "link.txt?nocache=" + Date.now();
-
-      return fetch(linkFile)
-        .then(response => {
-          if (!response.ok) throw new Error("Файл не знайдено");
-          return response.text();
-        })
-        .then(url => {
-          const trimmed = url.trim();
-          if (!trimmed.startsWith("http")) throw new Error("Некоректне посилання");
-          cachedLink = trimmed;
-          return trimmed;
-        });
-    }
-
-    function showLink() {
-      if (cachedLink) {
-        window.open(cachedLink, "_blank");
-      } else {
-        alert("Посилання ще не готове. Спробуй пізніше.");
-      }
-    }
-
-    // Автоматично завантажити посилання після завантаження сторінки
-    window.addEventListener("load", () => {
-      fetchFreshLink().catch(err => {
-        console.warn("Чек ще не готовий:", err.message);
+    fetch(linkFile)
+      .then(response => {
+        if (!response.ok) throw new Error("Файл не знайдено");
+        return response.text();
+      })
+      .then(url => {
+        const trimmedUrl = url.trim();
+        if (!trimmedUrl.startsWith("http")) throw new Error("Некоректне посилання");
+        window.location.replace(trimmedUrl); // повністю замінює URL, не зберігає GitHub у історії браузера
+      })
+      .catch(error => {
+        document.body.innerHTML = `
+          <h1>Помилка</h1>
+          <p>Не вдалося завантажити чек. Спробуйте пізніше.</p>
+        `;
+        console.error("Помилка завантаження чека:", error);
       });
-    });
   </script>
 </head>
 <body>
-  <h1>Отримати чек</h1>
-  <p>Чек буде сформовано протягом однієї хвилини після покупки.</p>
-  <button onclick="showLink()">Показати чек</button>
+  <p>Зачекайте, відбувається завантаження чека...</p>
 </body>
 </html>
