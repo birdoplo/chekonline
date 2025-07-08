@@ -2,31 +2,29 @@
 <html>
 <head>
   <meta charset="UTF-8">
-  <title>Redirecting...</title>
+  <title>Отримати чек</title>
   <script>
-    const linkFile = "link.txt?nocache=" + Date.now(); // ⛔ кеш
-
-    fetch(linkFile)
-      .then(response => response.text())
-      .then(url => {
-        window.location.href = url.trim();
-      })
-      .catch(error => {
-        document.body.innerHTML = "<p>Не вдалося завантажити посилання.</p>";
-        console.error("Помилка:", error);
-      });
+    function loadLink() {
+      const linkFile = "link.txt?nocache=" + Date.now();
+      fetch(linkFile)
+        .then(response => response.text())
+        .then(url => {
+          const trimmedUrl = url.trim();
+          if (trimmedUrl.startsWith("http")) {
+            window.open(trimmedUrl, "_blank");
+          } else {
+            alert("Неправильне посилання.");
+          }
+        })
+        .catch(error => {
+          alert("Не вдалося завантажити посилання.");
+          console.error("Помилка:", error);
+        });
+    }
   </script>
 </head>
 <body>
-  <p>Зачекай, виконується перенаправлення...<br>
-  Якщо не перенаправило — <a id="fallback" href="#">натисни тут</a>.</p>
-
-  <script>
-    fetch("link.txt?nocache=" + Date.now()) // ще раз для запасного лінку
-      .then(response => response.text())
-      .then(url => {
-        document.getElementById("fallback").href = url.trim();
-      });
-  </script>
+  <h1>Отримати чек</h1>
+  <button onclick="loadLink()">Натисни для перегляду</button>
 </body>
 </html>
