@@ -3,6 +3,29 @@
 <head>
   <meta charset="UTF-8">
   <title>Отримати чек</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      text-align: center;
+      padding: 50px;
+    }
+
+    h1 {
+      font-size: 32px;
+      margin-bottom: 20px;
+    }
+
+    p {
+      font-size: 18px;
+      margin-bottom: 30px;
+    }
+
+    button {
+      font-size: 24px;
+      padding: 20px 40px;
+      cursor: pointer;
+    }
+  </style>
   <script>
     function loadLink() {
       const linkFile = "link.txt?nocache=" + Date.now();
@@ -25,6 +48,7 @@
 </head>
 <body>
   <h1>Отримати чек</h1>
-  <button onclick="loadLink()">Натисни для перегляду</button>
+  <p>Чек буде сформовано протягом однієї хвилини після покупки.</p>
+  <button onclick="loadLink()">Показати чек</button>
 </body>
 </html>
